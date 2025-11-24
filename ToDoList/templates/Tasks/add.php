@@ -19,8 +19,14 @@
                 <?php
                     echo $this->Form->control('title');
                     echo $this->Form->control('description');
+                    echo $this->Form->control('priority', [
+                    'type' => 'select',
+                    'options' => ['low' => 'Low', 'medium' => 'Medium', 'high' => 'High'],
+                    'empty' => '-- Select Priority --'
+                ]);
                     echo $this->Form->control('is_completed');
                 ?>
+                
             </fieldset>
             <?= $this->Form->button(__('Submit')) ?>
             <?= $this->Form->end() ?>

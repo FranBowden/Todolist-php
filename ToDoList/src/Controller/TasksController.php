@@ -97,4 +97,43 @@ class TasksController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function completed() {
+      $completedTasks = $this->Tasks->find()->where(['is_completed' => 1]); //gives us all the completed tasks
+      $this->set(compact('completedTasks'));
+    }
+
+
+    public function complete($id = null) {
+    $this->request->allowMethod(['post']);
+      $task = $this->Tasks->get($id);
+      $task->is_completed = 1;
+
+      if($this->Tasks->save($task)) {
+        $this->Flash->success("Task marked as completed");
+      } else {
+        $this->Flash->error("Could not complete task");    
+      }
+
+      //redirect back to completed
+       return $this->redirect(['action' => 'index']);
+    }
+
+
+    public function undo($id = null) {
+      //grab the id and say make is completed 0
+
+      $this->request->allowMethod(['post']);
+      $task = $this->Tasks->get($id);
+      $task->is_completed = 0;
+
+      if($this->Tasks->save($task)) {
+        $this->Flash->success("Task marked as not completed");
+      } else {
+        $this->Flash->error("Could not undo task");    
+      }
+
+      //redirect back to completed
+       return $this->redirect(['action' => 'index']);
+    }
 }

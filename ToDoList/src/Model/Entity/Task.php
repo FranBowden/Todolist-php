@@ -32,5 +32,6 @@ class Task extends Entity
         'is_completed' => true,
         'created' => true,
         'modified' => true,
+        'priority' => true,
     ];
 }
