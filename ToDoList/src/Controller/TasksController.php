@@ -17,10 +17,15 @@ class TasksController extends AppController
      */
     public function index()
     {
-        $query = $this->Tasks->find();
-        $tasks = $this->paginate($query);
+       $userId = $this->request->getAttribute('identity')->getIdentifier();
 
-        $this->set(compact('tasks'));
+    // Paginate tasks
+    $query = $this->Tasks->find()
+        ->where(['is_completed' => 0, 'user_id' => $userId])
+        ->order(['Tasks.created' => 'DESC']);
+
+    $tasks = $this->paginate($query); // <-- paginate here
+    $this->set(compact('tasks'));
     }
 
     /**
@@ -32,8 +37,10 @@ class TasksController extends AppController
      */
     public function view($id = null)
     {
-        $task = $this->Tasks->get($id, contain: []);
+       $task = $this->Tasks->get($id, contain: []);
         $this->set(compact('task'));
+
+    
     }
 
     /**
@@ -43,10 +50,13 @@ class TasksController extends AppController
      */
     public function add()
     {
+      $userId = $this->request->getAttribute('identity')->getIdentifier();
         $task = $this->Tasks->newEmptyEntity();
         if ($this->request->is('post')) {
             $task = $this->Tasks->patchEntity($task, $this->request->getData());
+             $task->user_id = $userId;
             if ($this->Tasks->save($task)) {
+              
                 $this->Flash->success(__('The task has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
@@ -99,12 +109,17 @@ class TasksController extends AppController
     }
 
     public function completed() {
-      $completedTasks = $this->Tasks->find()->where(['is_completed' => 1]); //gives us all the completed tasks
-      $this->set(compact('completedTasks'));
+    
+    $userId = $this->request->getAttribute('identity')->getIdentifier();
+    
+     $completedTasks = $this->Tasks->find()
+    ->where(['is_completed' => 1, 'user_id' => $userId]);
+
+    $this->set(compact('completedTasks'));
     }
 
 
-    public function complete($id = null) {
+    public function complete($id) {
     $this->request->allowMethod(['post']);
       $task = $this->Tasks->get($id);
       $task->is_completed = 1;

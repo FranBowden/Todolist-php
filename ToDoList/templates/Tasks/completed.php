@@ -14,8 +14,9 @@
         <?php foreach ($completedTasks as $task): ?>
         <tr>
             <td><?= h($task->title) ?></td>
-            <td><?= $task->created->format('Y-m-d') ?></td>
-            <td>
+            <td><?= $task->created->format('d-m-Y') ?></td>
+            <td class="actions">
+               <?= $this->Html->link(__('View'), ['action' => 'view', $task->id]) ?>
                 <?= $this->Form->postLink(
                     'Undo',
                     ['action' => 'undo', $task->id],

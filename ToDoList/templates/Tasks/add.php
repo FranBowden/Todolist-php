@@ -4,6 +4,7 @@
  * @var \App\Model\Entity\Task $task
  */
 ?>
+
 <div class="row">
     <aside class="column">
         <div class="side-nav">

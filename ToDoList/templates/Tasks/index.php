@@ -8,7 +8,7 @@
 
 
 <?= $this->Html->link('View Completed Tasks', ['action' => 'completed'], ['class' => 'button']) ?>
-
+<?= $this->Html->link('Logout', ['controller' => 'Users', 'action' => 'logout'], ['class' => 'float-right']) ?>
 <div class="tasks index content">
 
   <?= $this->Html->link(__('New Task'), ['action' => 'add'], ['class' => 'button float-right']) ?>
@@ -50,7 +50,7 @@
               </span>
             </td>
 
-            <td><?= h($task->created) ?></td>
+            <td><?= h($task->created->format('d-m-Y')) ?></td>
             <td class="actions">
               <?= $this->Html->link(__('View'), ['action' => 'view', $task->id]) ?>
               <?= $this->Html->link(__('Edit'), ['action' => 'edit', $task->id]) ?>
